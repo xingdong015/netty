@@ -72,7 +72,7 @@ public final class EchoServer {
             // Start the server.
             ChannelFuture f = b.bind(PORT).sync();
 
-            // Wait until the server socket is closed.
+            // Wait until the server socket is closed.  此处必须这么写、否则进程会退出、参考netty进阶实战第一章节
             f.channel().closeFuture().sync();
         } finally {
             // Shut down all event loops to terminate all threads.

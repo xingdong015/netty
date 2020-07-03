@@ -139,11 +139,12 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     @Override
     void init(Channel channel) throws Exception {
+        //将ServerBootstrap中的option设置到NioServerSocketChannel中
         final Map<ChannelOption<?>, Object> options = options0();
         synchronized (options) {
             setChannelOptions(channel, options, logger);
         }
-
+        //将ServerBootstrap中的attrs设置到NioServerSocketChannel中
         final Map<AttributeKey<?>, Object> attrs = attrs0();
         synchronized (attrs) {
             for (Entry<AttributeKey<?>, Object> e: attrs.entrySet()) {
@@ -169,7 +170,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         p.addLast(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(final Channel ch) throws Exception {
-
+                //此处代码在接受到客户端的时候执行
                 final ChannelPipeline pipeline = ch.pipeline();
                 ChannelHandler handler = config.handler();
                 if (handler != null) {

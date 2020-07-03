@@ -18,11 +18,11 @@ package io.netty.channel.socket.nio;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelMetadata;
 import io.netty.channel.ChannelOutboundBuffer;
-import io.netty.util.internal.SocketUtils;
 import io.netty.channel.nio.AbstractNioMessageChannel;
 import io.netty.channel.socket.DefaultServerSocketChannelConfig;
 import io.netty.channel.socket.ServerSocketChannelConfig;
 import io.netty.util.internal.PlatformDependent;
+import io.netty.util.internal.SocketUtils;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
@@ -56,6 +56,8 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
              *
              *  See <a href="https://github.com/netty/netty/issues/2308">#2308</a>.
              */
+            //ServerSocketChannel的静态方法open底层也是调用provider.openServerSocketChannel()
+            //SelectorProvider.provider().openServerSocketChannel();  这里的SelectorProvider.provider()存在锁竞争
             return provider.openServerSocketChannel();
         } catch (IOException e) {
             throw new ChannelException(
@@ -84,6 +86,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
      */
     public NioServerSocketChannel(ServerSocketChannel channel) {
         super(null, channel, SelectionKey.OP_ACCEPT);
+        //此处的javaChannel就是channel也就是NIO底层的channel
         config = new NioServerSocketChannelConfig(this, javaChannel().socket());
     }
 

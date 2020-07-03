@@ -321,7 +321,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             // as the Channel is not registered yet we need to force the usage of the GlobalEventExecutor
             return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
         }
-        //对于服务端而言、此处将NioServerSocketChannel注册到BossGroup中
+        //对于服务端而言、此处将NioServerSocketChannel注册到BossEventLoopGroup中
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {

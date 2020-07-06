@@ -73,15 +73,16 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
         }
 
         if (executor == null) {
+            //此处使用ThreadPerTaskExecutor线程池
             executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
         }
-
+        //注意:此处如果是BossGroup的话、一般nThreads是1
         children = new EventExecutor[nThreads];
 
         for (int i = 0; i < nThreads; i ++) {
             boolean success = false;
             try {
-                //此处实际上是NioEventLoopGroup类型
+                //此处实际上是是NioEventLoopGroup的newChild负责创建新的执行器
                 children[i] = newChild(executor, args);
                 success = true;
             } catch (Exception e) {

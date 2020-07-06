@@ -85,8 +85,9 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
      * Create a new instance using the given {@link ServerSocketChannel}.
      */
     public NioServerSocketChannel(ServerSocketChannel channel) {
+        //参数channel就是java.io.ServerSocketChannel底层的channel、此处调用super方法、将java.io.ServerSocketChannel保存到域ch中
         super(null, channel, SelectionKey.OP_ACCEPT);
-        //此处的javaChannel就是channel也就是NIO底层的channel
+        //此处的javaChannel就是channel也就是NIO底层的channel也就是{@link io.netty.channel.socket.ServerSocketChannel}
         config = new NioServerSocketChannelConfig(this, javaChannel().socket());
     }
 
@@ -194,6 +195,8 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
     }
 
     private final class NioServerSocketChannelConfig extends DefaultServerSocketChannelConfig {
+        //这里的javaSocket是java中的Socket概念使用ServerSocketChannel中获取到的参考ServerSocketChannel的socket方法
+        //channel是netty中的channel概念
         private NioServerSocketChannelConfig(NioServerSocketChannel channel, ServerSocket javaSocket) {
             super(channel, javaSocket);
         }

@@ -30,7 +30,7 @@ import static io.netty.channel.ChannelOption.*;
  */
 public class DefaultServerSocketChannelConfig extends DefaultChannelConfig
                                               implements ServerSocketChannelConfig {
-    //ServerSocketChannel对应的ServerSocket
+    //java原生的Socket
     protected final ServerSocket javaSocket;
     private volatile int backlog = NetUtil.SOMAXCONN;
 

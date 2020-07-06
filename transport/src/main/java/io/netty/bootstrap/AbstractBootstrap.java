@@ -312,6 +312,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             //服务端反射创建:NioServerSocketChannel
             //客户端反射创建:NioSocketChannel
             channel = channelFactory.newChannel();
+            //为当前的channel设置一些从启动器设置的参数、例如channelOption或者attribute等信息
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {
@@ -322,6 +323,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
         }
         //对于服务端而言、此处将NioServerSocketChannel注册到BossEventLoopGroup中
+        //由ServerBootstrap.group方法可以知道此处的group是NioEventLoopGroup也就是BossGroup、主事件循环器
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
